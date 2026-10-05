@@ -4,23 +4,19 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password'])]
-#[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that are mass assignable.
      *
-     * @return array<string, string>
+     * @var list<string>
      */
     protected $fillable = [
         'name',
@@ -28,20 +24,53 @@ class User extends Authenticatable
         'password',
         'role',
         'phone',
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var list<string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
         ];
+    }
 
-        public function properties()
-        {
+    public function isLandlord(): bool
+    {
+        return $this->role === 'landlord';
+    }
+
+    public function isTenant(): bool
+    {
+        return $this->role === 'tenant';
+    }
+
+    public function properties()
+    {
         return $this->hasMany(Property::class, 'landlord_id');
-        }
+    }
 
-        public function rentals()
-        {
+    public function rentals()
+    {
         return $this->hasMany(Rental::class, 'tenant_id');
-        }
+    }
 
-        public function complaints()
-        {
+    public function complaints()
+    {
         return $this->hasMany(Complaint::class, 'tenant_id');
-        }
+    }
 }
