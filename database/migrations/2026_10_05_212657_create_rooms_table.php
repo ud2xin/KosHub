@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('property_id')->constrained('properties')->cascadeOnDelete();
+            $table->string('room_number');
+            $table->string('type')->nullable(); // contoh: Standard, VIP, AC
+            $table->decimal('price', 12, 2);
+            $table->enum('status', ['available', 'occupied', 'maintenance'])->default('available');
+            $table->text('facilities')->nullable();
             $table->timestamps();
         });
     }

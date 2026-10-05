@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('rental_id')->constrained('rentals')->cascadeOnDelete();
+            $table->string('invoice_number')->unique();
+            $table->decimal('amount', 12, 2);
+            $table->enum('status', ['unpaid', 'paid', 'expired'])->default('unpaid');
+            $table->string('payment_channel')->nullable(); // misal: BCA_VA, QRIS
+            $table->timestamp('paid_at')->nullable();
+            $table->string('snap_token')->nullable(); // token untuk popup payment gateway
             $table->timestamps();
         });
     }

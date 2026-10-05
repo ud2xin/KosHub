@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('rentals', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('tenant_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('room_id')->constrained('rooms')->cascadeOnDelete();
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->decimal('total_amount', 12, 2);
+            $table->enum('status', ['pending', 'active', 'completed', 'cancelled'])->default('pending');
             $table->timestamps();
         });
     }

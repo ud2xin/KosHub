@@ -11,9 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('properties', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+         Schema::create('properties', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('landlord_id')->constrained('users')->cascadeOnDelete();
+        $table->string('name');
+        $table->string('slug')->unique();
+        $table->text('description')->nullable();
+        $table->text('address');
+        $table->string('city');
+        $table->enum('type', ['putra', 'putri', 'campur'])->default('campur');
+        $table->text('rules')->nullable();
+        $table->string('thumbnail')->nullable();
+        $table->timestamps();
         });
     }
 
