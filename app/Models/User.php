@@ -22,11 +22,26 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'role',
+        'phone',
         ];
-    }
+
+        public function properties()
+        {
+        return $this->hasMany(Property::class, 'landlord_id');
+        }
+
+        public function rentals()
+        {
+        return $this->hasMany(Rental::class, 'tenant_id');
+        }
+
+        public function complaints()
+        {
+        return $this->hasMany(Complaint::class, 'tenant_id');
+        }
 }
