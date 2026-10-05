@@ -26,43 +26,55 @@
 
     <!-- Monitoring Unit Kamar -->
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-    <h3 class="text-lg font-bold text-gray-800 mb-4">Daftar Status Unit Kamar</h3>
-    <div class="overflow-x-auto">
-    <table class="w-full text-left border-collapse">
-    <thead>
-    <tr class="border-b bg-gray-50 text-sm font-semibold text-gray-600">
-    <th class="p-3">Kos</th>
-    <th class="p-3">No. Kamar</th>
-    <th class="p-3">Tipe</th>
-    <th class="p-3">Harga / Bulan</th>
-    <th class="p-3">Status</th>
-    </tr>
-    </thead>
-    <tbody class="divide-y text-sm">
-    @forelse($rooms as $room)
-    <tr>
-    <td class="p-3 font-medium">{{ $room->property->name }}</td>
-    <td class="p-3">{{ $room->room_number }}</td>
-    <td class="p-3">{{ $room->type }}</td>
-    <td class="p-3">Rp {{ number_format($room->price, 0, ',', '.') }}</td>
-    <td class="p-3">
-    @if($room->status === 'available')
-    <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-semibold">Tersedia</span>
-    @elseif($room->status === 'occupied')
-    <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-semibold">Terisi</span>
-    @else
-    <span class="px-2 py-1 bg-gray-100 text-gray-800 rounded-full text-xs font-semibold">Perbaikan</span>
-    @endif
-    </td>
-    </tr>
-    @empty
-    <tr>
-    <td colspan="5" class="p-3 text-center text-gray-500">Belum ada unit kamar.</td>
-    </tr>
-    @endforelse
-    </tbody>
-    </table>
-    </div>
+        <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-bold text-gray-800">Daftar Status Unit Kamar</h3>
+        <a href="{{ route('rooms.create') }}" class="bg-indigo-600 text-white text-xs px-3 py-2 rounded hover:bg-indigo-700 font-semibold inline-block">
+        + Tambah Kamar Baru
+        </a>
+        </div>
+
+        <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+        <thead>
+        <tr class="border-b bg-gray-50 text-sm font-semibold text-gray-600">
+        <th class="p-3">Kos</th>
+        <th class="p-3">No. Kamar</th>
+        <th class="p-3">Tipe</th>
+        <th class="p-3">Harga / Bulan</th>
+        <th class="p-3">Status</th>
+        <th class="p-3 text-center">Aksi</th>
+        </tr>
+        </thead>
+        <tbody class="divide-y text-sm">
+        @forelse($rooms as $room)
+        <tr>
+        <td class="p-3 font-medium">{{ $room->property->name }}</td>
+        <td class="p-3">{{ $room->room_number }}</td>
+        <td class="p-3">{{ $room->type }}</td>
+        <td class="p-3">Rp {{ number_format($room->price, 0, ',', '.') }}</td>
+        <td class="p-3">
+        @if($room->status === 'available')
+        <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-semibold">Tersedia</span>
+        @elseif($room->status === 'occupied')
+        <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-semibold">Terisi</span>
+        @else
+        <span class="px-2 py-1 bg-gray-100 text-gray-800 rounded-full text-xs font-semibold">Perbaikan</span>
+        @endif
+        </td>
+        <td class="p-3 text-center">
+        <a href="{{ route('rooms.edit', $room->id) }}" class="text-indigo-600 hover:text-indigo-900 text-xs font-semibold">
+        Edit
+        </a>
+        </td>
+        </tr>
+        @empty
+        <tr>
+        <td colspan="6" class="p-3 text-center text-gray-500">Belum ada unit kamar.</td>
+        </tr>
+        @endforelse
+        </tbody>
+        </table>
+        </div>
     </div>
 
     <!-- Laporan Pengaduan Masuk -->
