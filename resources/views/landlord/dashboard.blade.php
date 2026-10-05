@@ -69,21 +69,29 @@
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
     <h3 class="text-lg font-bold text-gray-800 mb-4">Pengaduan Masuk dari Penyewa</h3>
     <div class="space-y-4">
+
     @forelse($complaints as $c)
-    <div class="p-4 border rounded-lg bg-gray-50 flex justify-between items-start">
+    <div class="p-4 border rounded-lg bg-gray-50 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
     <div>
-    <h4 class="font-semibold text-gray-800">{{ $c->title }}</h4>
-    <p class="text-sm text-gray-600 mt-1">{{ $c->description }}</p>
-    <p class="text-xs text-gray-400 mt-2">
-    Dari: {{ $c->tenant->name }} | Kamar: {{ $c->room->room_number }}
-    </p>
+        <h4 class="font-semibold text-gray-800">{{ $c->title }}</h4>
+        <p class="text-sm text-gray-600 mt-1">{{ $c->description }}</p>
+        <p class="text-xs text-gray-400 mt-2">
+            Dari: {{ $c->tenant->name }} | Kamar: {{ $c->room->room_number }} ({{ $c->room->property->name }})
+        </p>
     </div>
-    <span class="px-2 py-1 bg-red-100 text-red-700 text-xs font-bold rounded">
-    {{ strtoupper($c->status) }}
-    </span>
+
+    <div class="flex items-center space-x-2">
+        <form action="{{ route('complaints.updateStatus', $c->id) }}" method="POST" class="inline">
+        @csrf
+        @method('PATCH')
+        <select name="status" onchange="this.form.submit()" class="text-xs rounded-md border-gray-300 font-semibold">
+        <option value="open" {{ $c->status === 'open'? 'selected': '' }}>OPEN (Baru)</option>
+        <option value="in_progress" {{ $c->status === 'in_progress'? 'selected': '' }}>PROSES</option>
+        <option value="resolved" {{ $c->status === 'resolved'? 'selected': '' }}>SELESAI</option>
+        </select>
+        </form>
+        </div>
     </div>
-    @empty
-    <p class="text-sm text-gray-500">Tidak ada pengaduan aktif.</p>
     @endforelse
     </div>
     </div>
