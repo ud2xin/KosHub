@@ -40,9 +40,9 @@
     <div class="flex justify-between items-center mb-4">
     <h3 class="text-lg font-bold text-gray-800">Riwayat Pengaduan Fasilitas</h3>
     @if($activeRental)
-    <button class="bg-indigo-600 text-white text-xs px-3 py-2 rounded hover:bg-indigo-700 font-semibold">
+    <a href="{{ route('complaints.create') }}" class="bg-indigo-600 text-white text-xs px-3 py-2 rounded hover:bg-indigo-700 font-semibold inline-block">
     + Buat Pengaduan Baru
-    </button>
+    </a>
     @endif
     </div>
 
